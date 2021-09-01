@@ -1,14 +1,14 @@
-export default function FbIcon() {
+export default function FbIcon({ icon, iconColor }) {
   return (
     <svg
       version='1.1'
       id='Capa_1'
       x='0px'
       y='0px'
-      width='16'
-      height='16'
+      width={icon}
+      height={icon}
       viewBox='0 0 60.734 60.733'
-      fill='#385185'
+      fill={iconColor}
     >
       <g>
         <path

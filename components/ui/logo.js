@@ -1,9 +1,9 @@
-export default function Logo() {
+export default function Logo({ top, bottom }) {
   return (
     <svg
-      className='mx-auto my-11'
+      className={`mx-auto mt-${top} mb-${bottom}`}
       xmlns='http://www.w3.org/2000/svg'
-      width='200'
+      width='180'
       viewBox='0 0 594.094 168.536'
     >
       <g fill='#262626'>

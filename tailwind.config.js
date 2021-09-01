@@ -27,6 +27,9 @@ module.exports = {
       borderWidth: {
         1: '1px',
       },
+      borderRadius: {
+        4: '4px',
+      },
       padding: {
         1: '5px',
       },
@@ -35,6 +38,7 @@ module.exports = {
       },
       fontSize: {
         13: '13px',
+        17: '17px',
       },
     },
   },
