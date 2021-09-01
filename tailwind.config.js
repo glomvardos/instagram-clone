@@ -4,13 +4,22 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      screens: {
+        xs: '451px',
+      },
       colors: {
         whiteBg: '#FAFAFA',
         gray: '#DBDBDB',
         grayDarker: '#8E8E8E',
         grayBorderDarker: '#A8A8A8',
         lightBlue: '#B2DFFC',
+        blue: '#385185',
+        authBlue: '#0095f6',
+        blueDarker: '#00376b',
         textDark: '#262626',
+      },
+      height: {
+        custom1: '1px',
       },
       maxWidth: {
         350: '350px',
@@ -21,13 +30,19 @@ module.exports = {
       padding: {
         1: '5px',
       },
+      margin: {
+        custom18: '18px',
+      },
       fontSize: {
         13: '13px',
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['disabled'],
+      cursor: ['disabled'],
+    },
   },
   plugins: [],
 }

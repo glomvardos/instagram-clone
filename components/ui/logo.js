@@ -1,7 +1,7 @@
 export default function Logo() {
   return (
     <svg
-      className='mx-auto mb-12'
+      className='mx-auto my-11'
       xmlns='http://www.w3.org/2000/svg'
       width='200'
       viewBox='0 0 594.094 168.536'
