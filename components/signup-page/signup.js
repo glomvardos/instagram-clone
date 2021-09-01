@@ -12,8 +12,8 @@ export default function Signup() {
     <AuthContainer className='bg-whiteBg min-h-full flex flex-col justify-center items-center'>
       <div>
         <div className='max-w-350 px-9 border-transparent xs:border-gray border-1 border-solid'>
-          <Logo top={8} bottom={2} />
-          <p className='font-semibold text-grayDarker text-center text-17'>
+          <Logo top={8} bottom={3} />
+          <p className='font-semibold text-grayDarker text-center text-17 leading-5'>
             Sign up to see photos and videos from your friends.
           </p>
           <LoginFbButton
@@ -26,10 +26,14 @@ export default function Signup() {
           />
           <Divider />
           <form>
-            <Input type='text' placeholder='Mobile Number or Email' />
-            <Input type='text' placeholder='Full Name' />
-            <Input type='text' placeholder='Username' />
-            <Input type='password' placeholder='Password' />
+            <Input
+              type='text'
+              placeholder='Mobile Number or Email'
+              ariaLabel='Mobile Number or Email'
+            />
+            <Input type='text' placeholder='Full Name' ariaLabel='Full Name' />
+            <Input type='text' placeholder='Username' ariaLabel='Username' />
+            <Input type='password' placeholder='Password' ariaLabel='Password' />
             <AuthButton text='Next' />
           </form>
           <p className='text-grayDarker text-center text-xs mt-custom18 mb-10'>
