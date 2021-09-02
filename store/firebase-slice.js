@@ -1,12 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { firestore, FieldValue } from '../lib/firebase'
+import { app } from '../lib/firebase'
 
 const firebaseSlice = createSlice({
   name: 'firebase',
   initialState: {
-    firestore: firestore,
-    FieldValue: FieldValue,
+    isLoading: false,
+  },
+  reducers: {
+    isLoadingHandler(state) {
+      state.isLoading = true
+    },
+    isNotLoadingHandler(state) {
+      state.isLoading = false
+    },
   },
 })
+
+export const firebaseActions = firebaseSlice.actions
 
 export default firebaseSlice

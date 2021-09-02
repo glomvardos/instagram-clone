@@ -17,6 +17,7 @@ module.exports = {
         authBlue: '#0095f6',
         blueDarker: '#00376b',
         textDark: '#262626',
+        errorAlert: '#ED4956',
       },
       height: {
         custom1: '1px',

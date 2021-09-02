@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import AuthContainer from '../ui/auth-container'
 import AuthButton from '../ui/buttons/auth-button'
@@ -6,14 +9,47 @@ import LoginFbButton from '../ui/buttons/login-fb-button'
 import Logo from '../ui/logo'
 import Input from '../ui/input'
 import Divider from '../ui/divider'
-import { useState } from 'react'
+import Error from '../ui/error'
+
+import { firebaseActions } from '../../store/firebase-slice'
 
 export default function Login() {
   const [userInput, setUserInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
+  const [error, setError] = useState(null)
+  const dispatch = useDispatch()
+  const isLoading = useSelector(state => state.firebase.isLoading)
 
-  const onSubmitHandler = event => {
+  const onSubmitHandler = async event => {
     event.preventDefault()
+    dispatch(firebaseActions.isLoadingHandler())
+
+    // Check for valid email
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    if (!userInput.match(emailRegex)) {
+      dispatch(firebaseActions.isNotLoadingHandler())
+      setError('Please enter a valid email.')
+      return
+    }
+
+    const auth = getAuth()
+    try {
+      const response = await signInWithEmailAndPassword(auth, userInput, passwordInput)
+      setUserInput('')
+      setPasswordInput('')
+      setError(null)
+      dispatch(firebaseActions.isNotLoadingHandler())
+    } catch (err) {
+      dispatch(firebaseActions.isNotLoadingHandler())
+      if (err.message.includes('user-not-found')) {
+        setError(
+          "The username you entered doesn't belong to an account. Please check your username and try again."
+        )
+      }
+      if (err.message.includes('wrong-password')) {
+        setError('Sorry, your password was incorrect. Please double-check your password.')
+      }
+    }
   }
 
   const isNotValidInput =
@@ -39,7 +75,7 @@ export default function Login() {
               value={passwordInput}
               onChange={e => setPasswordInput(e.target.value)}
             />
-            <AuthButton text='Log in' isValid={isNotValidInput} />
+            <AuthButton text='Log in' isValid={isNotValidInput} isLoading={isLoading} />
           </form>
           <Divider />
           <LoginFbButton
@@ -50,6 +86,7 @@ export default function Login() {
             icon='16'
             iconColor='#385185'
           />
+          {error && <Error error={error} />}
           <p className='text-center text-xs text-blueDarker mb-4'>Forgot password?</p>
         </div>
         <div className='max-w-350 px-10 border-transparent mt-3 py-5 xs:border-gray border-1 border-solid'>
