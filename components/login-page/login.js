@@ -17,6 +17,7 @@ export default function Login() {
   const [userInput, setUserInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [error, setError] = useState(null)
+
   const dispatch = useDispatch()
   const isLoading = useSelector(state => state.firebase.isLoading)
 
@@ -52,6 +53,7 @@ export default function Login() {
     }
   }
 
+  // Check for valid inputs
   const isNotValidInput =
     userInput.trim() !== '' && passwordInput.trim() !== '' && passwordInput.length >= 6
 
