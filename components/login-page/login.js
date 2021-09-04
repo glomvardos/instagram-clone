@@ -36,6 +36,8 @@ export default function Login() {
     const auth = getAuth()
     try {
       const response = await signInWithEmailAndPassword(auth, userInput, passwordInput)
+
+      // Reset form
       setUserInput('')
       setPasswordInput('')
       setError(null)
@@ -46,9 +48,10 @@ export default function Login() {
         setError(
           "The username you entered doesn't belong to an account. Please check your username and try again."
         )
-      }
-      if (err.message.includes('wrong-password')) {
+      } else if (err.message.includes('wrong-password')) {
         setError('Sorry, your password was incorrect. Please double-check your password.')
+      } else {
+        setError(err.message)
       }
     }
   }

@@ -1,3 +1,7 @@
+import { useState } from 'react'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, addDoc } from 'firebase/firestore'
+import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import AuthContainer from '../ui/auth-container'
 import AuthButton from '../ui/buttons/auth-button'
@@ -6,8 +10,74 @@ import LoginFbButton from '../ui/buttons/login-fb-button'
 import Logo from '../ui/logo'
 import Input from '../ui/input'
 import Divider from '../ui/divider'
+import Error from '../ui/error'
+import { firestore } from '../../lib/firebase'
+import { firebaseActions } from '../../store/firebase-slice'
+import { capitalizeName } from '../../helpers/capitalizeName'
 
 export default function Signup() {
+  const [emailInput, setEmailInput] = useState('')
+  const [usernameInput, setUsernameInput] = useState('')
+  const [fullnameInput, setFullnameInput] = useState('')
+  const [passwordInput, setPasswordInput] = useState('')
+  const [error, setError] = useState(null)
+
+  const dispatch = useDispatch()
+  const isLoading = useSelector(state => state.firebase.isLoading)
+
+  const onSubmitHandler = async event => {
+    event.preventDefault()
+    dispatch(firebaseActions.isLoadingHandler())
+
+    // Check for valid email
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    if (!emailInput.match(emailRegex)) {
+      dispatch(firebaseActions.isNotLoadingHandler())
+      setError('Please enter a valid email.')
+      return
+    }
+
+    const auth = getAuth()
+    try {
+      const createdUser = await createUserWithEmailAndPassword(auth, emailInput, passwordInput)
+
+      // Add user properties to firestore
+      const addUserProps = await addDoc(collection(firestore, 'users'), {
+        userId: createdUser.user.uid,
+        username: usernameInput,
+        fullName: capitalizeName(fullnameInput),
+        emailAddress: emailInput,
+        following: [],
+        followers: [],
+        dateCreated: Date.now(),
+      })
+
+      // Reset form
+      setEmailInput('')
+      setUsernameInput('')
+      setFullnameInput('')
+      setPasswordInput('')
+
+      setError(null)
+      dispatch(firebaseActions.isNotLoadingHandler())
+    } catch (err) {
+      dispatch(firebaseActions.isNotLoadingHandler())
+      if (err.message.includes('email-already-in-use')) {
+        setError(`Another account is using ${emailInput}`)
+      } else {
+        setError(err.message)
+      }
+    }
+  }
+
+  // Check for valid inputs
+  const isNotValidInput =
+    emailInput.trim() !== '' &&
+    usernameInput.trim() !== '' &&
+    fullnameInput.trim() !== '' &&
+    passwordInput.trim() !== '' &&
+    passwordInput.length >= 6
+
   return (
     <AuthContainer className='bg-whiteBg min-h-full flex flex-col justify-center items-center'>
       <div>
@@ -25,17 +95,40 @@ export default function Signup() {
             icon={17}
           />
           <Divider />
-          <form>
+          <form onSubmit={onSubmitHandler}>
             <Input
               type='text'
               placeholder='Mobile Number or Email'
               ariaLabel='Mobile Number or Email'
+              value={emailInput}
+              onChange={e => setEmailInput(e.target.value.toLowerCase())}
             />
-            <Input type='text' placeholder='Full Name' ariaLabel='Full Name' />
-            <Input type='text' placeholder='Username' ariaLabel='Username' />
-            <Input type='password' placeholder='Password' ariaLabel='Password' />
-            <AuthButton text='Next' />
+            <Input
+              type='text'
+              placeholder='Full Name'
+              ariaLabel='Full Name'
+              value={fullnameInput}
+              onChange={e => setFullnameInput(e.target.value)}
+            />
+            <Input
+              type='text'
+              placeholder='Username'
+              ariaLabel='Username'
+              value={usernameInput}
+              onChange={e => setUsernameInput(e.target.value.toLowerCase())}
+            />
+
+            <Input
+              type='password'
+              placeholder='Password'
+              ariaLabel='Password'
+              value={passwordInput}
+              onChange={e => setPasswordInput(e.target.value)}
+            />
+
+            <AuthButton text='Sign up' isValid={isNotValidInput} isLoading={isLoading} />
           </form>
+          {error && <Error error={error} isSignup={true} />}
           <p className='text-grayDarker text-center text-xs mt-custom18 mb-10'>
             By signing up, you agree to our <strong>Terms</strong> . Learn how we collect, use and
             share your data in our <strong>Data Policy</strong> and how we use cookies and similar
