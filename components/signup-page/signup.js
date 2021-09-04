@@ -14,6 +14,7 @@ import Error from '../ui/error'
 import { firestore } from '../../lib/firebase'
 import { firebaseActions } from '../../store/firebase-slice'
 import { capitalizeName } from '../../helpers/capitalizeName'
+import { getUsernameFromFirestore } from '../../helpers/getUsernameFromFirestore'
 
 export default function Signup() {
   const [emailInput, setEmailInput] = useState('')
@@ -30,7 +31,7 @@ export default function Signup() {
     dispatch(firebaseActions.isLoadingHandler())
 
     // Check for valid email
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/
     if (!emailInput.match(emailRegex)) {
       dispatch(firebaseActions.isNotLoadingHandler())
       setError('Please enter a valid email.')
@@ -39,14 +40,22 @@ export default function Signup() {
 
     const auth = getAuth()
     try {
+      // Check if username already exists
+      const result = await getUsernameFromFirestore(usernameInput)
+      if (result.length > 0) {
+        setError('Username already exists')
+        throw new Error()
+      }
+
       const createdUser = await createUserWithEmailAndPassword(auth, emailInput, passwordInput)
+      createdUser.user.displayName = usernameInput
 
       // Add user properties to firestore
       const addUserProps = await addDoc(collection(firestore, 'users'), {
         userId: createdUser.user.uid,
-        username: usernameInput,
+        username: usernameInput.toLowerCase(),
         fullName: capitalizeName(fullnameInput),
-        emailAddress: emailInput,
+        emailAddress: emailInput.toLowerCase(),
         following: [],
         followers: [],
         dateCreated: Date.now(),
@@ -64,8 +73,6 @@ export default function Signup() {
       dispatch(firebaseActions.isNotLoadingHandler())
       if (err.message.includes('email-already-in-use')) {
         setError(`Another account is using ${emailInput}`)
-      } else {
-        setError(err.message)
       }
     }
   }

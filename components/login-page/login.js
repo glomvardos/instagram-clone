@@ -26,7 +26,7 @@ export default function Login() {
     dispatch(firebaseActions.isLoadingHandler())
 
     // Check for valid email
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/
     if (!userInput.match(emailRegex)) {
       dispatch(firebaseActions.isNotLoadingHandler())
       setError('Please enter a valid email.')
