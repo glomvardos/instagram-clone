@@ -7,6 +7,15 @@ module.exports = {
       screens: {
         xs: '451px',
       },
+      keyframes: {
+        customOpacity: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        opacity: 'customOpacity 200ms ease-out forwards',
+      },
       colors: {
         whiteBg: '#FAFAFA',
         gray: '#DBDBDB',

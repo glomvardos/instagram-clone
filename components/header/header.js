@@ -8,7 +8,7 @@ export default function Header() {
       <nav className='flex justify-between items-center max-w-975 w-full px-5'>
         <Link href='/'>
           <a>
-            <Logo width={107} />
+            <Logo width={107} top={2} />
           </a>
         </Link>
         <Search />
