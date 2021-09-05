@@ -21,9 +21,15 @@ module.exports = {
       },
       height: {
         custom1: '1px',
+        custom14: '14px',
+        custom54: '54px',
+      },
+      width: {
+        custom14: '14px',
       },
       maxWidth: {
         350: '350px',
+        975: '975px',
       },
       borderWidth: {
         1: '1px',
@@ -40,6 +46,9 @@ module.exports = {
       fontSize: {
         13: '13px',
         17: '17px',
+      },
+      boxShadow: {
+        custom: '0 0 5px 1px rgba(0,0,0,.0975)',
       },
     },
   },

@@ -37,16 +37,16 @@ export default function Signup() {
       setError('Please enter a valid email.')
       return
     }
+    // Check if username already exists
+    const result = await getUsernameFromFirestore(usernameInput)
+    if (result.length > 0) {
+      dispatch(firebaseActions.isNotLoadingHandler())
+      setError('Username already exists')
+      return
+    }
 
     const auth = getAuth()
     try {
-      // Check if username already exists
-      const result = await getUsernameFromFirestore(usernameInput)
-      if (result.length > 0) {
-        setError('Username already exists')
-        throw new Error()
-      }
-
       const createdUser = await createUserWithEmailAndPassword(auth, emailInput, passwordInput)
       createdUser.user.displayName = usernameInput
 
