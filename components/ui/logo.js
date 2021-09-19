@@ -1,7 +1,13 @@
-export default function Logo({ top = 0, bottom = 0, width = 180 }) {
+import { useRouter } from 'next/router'
+
+export default function Logo({ top, bottom, width = '180' }) {
+  const { pathname } = useRouter()
+  const mt = pathname === '/signup' ? 'mt-8' : pathname === '/login' ? 'mt-9' : `mt-${top}`
+  const mb = pathname === '/signup' ? 'mb-3' : pathname === '/login' ? 'mb-9' : `mt-${bottom}`
+
   return (
     <svg
-      className={`mx-auto mt-${top} mb-${bottom}`}
+      className={`mx-auto ${mt} ${mb}`}
       xmlns='http://www.w3.org/2000/svg'
       width={width}
       viewBox='0 0 594.094 168.536'

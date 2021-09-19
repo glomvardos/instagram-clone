@@ -9,7 +9,7 @@ export default function Header({ children }) {
         <nav className='flex justify-between items-center max-w-975 w-full'>
           <Link href='/'>
             <a>
-              <Logo width={107} top={2} />
+              <Logo width='107' top='2' />
             </a>
           </Link>
           <Search />

@@ -89,7 +89,7 @@ export default function Signup() {
     <AuthContainer className='bg-whiteBg min-h-full flex flex-col justify-center items-center'>
       <div>
         <div className='max-w-350 px-9 border-transparent xs:border-gray border-1 border-solid'>
-          <Logo top={8} bottom={3} />
+          <Logo />
           <p className='font-semibold text-grayDarker text-center text-17 leading-5'>
             Sign up to see photos and videos from your friends.
           </p>

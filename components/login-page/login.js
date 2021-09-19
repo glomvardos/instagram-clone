@@ -64,7 +64,7 @@ export default function Login() {
     <AuthContainer className='bg-whiteBg min-h-full flex flex-col justify-center items-center'>
       <div>
         <div className='max-w-350 px-9 border-transparent xs:border-gray border-1 border-solid'>
-          <Logo top={9} bottom={9} />
+          <Logo />
           <form onSubmit={onSubmitHandler}>
             <Input
               type='text'

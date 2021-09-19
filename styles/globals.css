@@ -3,10 +3,13 @@
 @tailwind components;
 @tailwind utilities;
 
+#__next {
+  height: 100%;
+}
+
 @layer base {
   html,
-  body,
-  #__next {
+  body {
     height: 100%;
   }
 
