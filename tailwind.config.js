@@ -27,6 +27,7 @@ module.exports = {
         blueDarker: '#00376b',
         textDark: '#262626',
         errorAlert: '#ED4956',
+        NotFoundColor: '#003569',
       },
       height: {
         custom1: '1px',
