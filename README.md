@@ -1,29 +1,57 @@
-# Next.js + Tailwind CSS Example
+<!-- Please update value in the {}  -->
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v2.2)](https://blog.tailwindcss.com/tailwindcss-2-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+<h1 align="center">Instagram Clone</h1>
 
-It uses the new [`Just-in-Time Mode`](https://tailwindcss.com/docs/just-in-time-mode) for Tailwind CSS.
+<div align="center">
+  <h3>
+    <a href="https://instagram-clone-glomvardos.vercel.app/">
+      Demo
+    </a>
+  </h3>
+</div>
 
-## Preview
+<!-- TABLE OF CONTENTS -->
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+## Table of Contents
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+- [Table of Contents](#table-of-contents)
+- [Overview](#overview)
+- [Built With](#built-with)
+- [How To Use](#how-to-use)
+- [Contact](#contact)
 
-## Deploy your own
+<!-- OVERVIEW -->
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+## Overview
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+This project is using Next.js Tailwind CSS, and Firebase for user authentication and data storage
 
-## How to use
+### Built With
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+<!-- This section should list any major frameworks that you built your project using. Here are a few examples.-->
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+## How To Use
+
+<!-- Example: -->
+
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
+# Clone this repository
+$ git clone https://github.com/glomvardos/instagram-clone.git
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm run dev
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Contact
+
+- GitHub [@glomvardos](https://github.com/glomvardos)
+- Twitter [@glomvardos](https://twitter.com/glomvardos)
+- Portfolio [@glomvardos](https://glomvardos.com)
