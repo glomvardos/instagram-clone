@@ -83,14 +83,7 @@ export default function Login() {
             <AuthButton text='Log in' isValid={isNotValidInput} isLoading={isLoading} />
           </form>
           <Divider />
-          <LoginFbButton
-            bgColor='transparent'
-            textColor='blue'
-            top='6'
-            bottom='4'
-            icon='16'
-            iconColor='#385185'
-          />
+          <LoginFbButton bgColor='transparent' bottom='4' icon='16' iconColor='#385185' />
           {error && <Error error={error} />}
           <p className='text-center text-xs text-blueDarker mb-4'>Forgot password?</p>
         </div>

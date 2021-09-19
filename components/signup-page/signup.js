@@ -93,13 +93,7 @@ export default function Signup() {
           <p className='font-semibold text-grayDarker text-center text-17 leading-5'>
             Sign up to see photos and videos from your friends.
           </p>
-          <LoginFbButton
-            bgColor='authBlue'
-            width='full'
-            textColor='white'
-            iconColor='#ffffff'
-            icon={17}
-          />
+          <LoginFbButton bgColor='authBlue' width='full' iconColor='#ffffff' icon={17} />
           <Divider />
           <form onSubmit={onSubmitHandler}>
             <Input

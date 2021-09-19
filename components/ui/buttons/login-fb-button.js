@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import FbIcon from '../icons/fb-icon'
 
-export default function LoginFbButton({ bgColor, textColor, icon, iconColor, top, bottom, width }) {
+export default function LoginFbButton({ bgColor, icon, iconColor, top, bottom, width }) {
   const { pathname } = useRouter()
   const mt = pathname === '/signup' ? 'mt-custom18' : pathname === '/login' ? 'mt-6' : `mt-${top}`
+  const textColor =
+    pathname === '/signup' ? 'text-white' : pathname === '/login' ? 'text-blue' : null
 
   return (
     <button
@@ -13,7 +15,7 @@ export default function LoginFbButton({ bgColor, textColor, icon, iconColor, top
       <span className='mr-2'>
         <FbIcon icon={icon} iconColor={iconColor} />
       </span>
-      <span className={`text-${textColor} font-semibold text-sm`}>Log in with Facebook</span>
+      <span className={`${textColor} font-semibold text-sm`}>Log in with Facebook</span>
     </button>
   )
 }
