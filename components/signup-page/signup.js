@@ -97,7 +97,6 @@ export default function Signup() {
             bgColor='authBlue'
             width='full'
             textColor='white'
-            top='custom18'
             iconColor='#ffffff'
             icon={17}
           />

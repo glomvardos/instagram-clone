@@ -86,8 +86,8 @@ export default function Login() {
           <LoginFbButton
             bgColor='transparent'
             textColor='blue'
-            top={6}
-            bottom={4}
+            top='6'
+            bottom='4'
             icon='16'
             iconColor='#385185'
           />
