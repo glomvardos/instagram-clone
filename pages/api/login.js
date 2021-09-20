@@ -1,13 +1,13 @@
+import cookie from 'cookie'
 import { firebase } from '../../lib/firebase'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import cookie from 'cookie'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     req.status(405).json({ message: `Method ${req.method} is not allowed` })
     return
   }
-
+  firebase
   const { userInput, passwordInput } = req.body
 
   const auth = getAuth()
