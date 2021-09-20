@@ -1,4 +1,4 @@
-export default function Divider({ margin }) {
+export default function Divider() {
   return (
     <div className='w-full my-custom18 flex justify-between items-center'>
       <div className='bg-gray h-custom1 w-full' />

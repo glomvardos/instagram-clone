@@ -1,4 +1,4 @@
-export default function Error({ error, isSignup }) {
+export default function ErrorMessage({ error, isSignup }) {
   const isNotPassword = !error.includes('password')
   return (
     <p

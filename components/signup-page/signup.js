@@ -10,7 +10,7 @@ import LoginFbButton from '../ui/buttons/login-fb-button'
 import Logo from '../ui/logo'
 import Input from '../ui/input'
 import Divider from '../ui/divider'
-import Error from '../ui/error'
+import ErrorMessage from '../ui/error-message'
 import { firestore } from '../../lib/firebase'
 import { firebaseActions } from '../../store/firebase-slice'
 import { capitalizeName } from '../../helpers/capitalizeName'
@@ -128,7 +128,7 @@ export default function Signup() {
 
             <AuthButton text='Sign up' isValid={isNotValidInput} isLoading={isLoading} />
           </form>
-          {error && <Error error={error} isSignup={true} />}
+          {error && <ErrorMessage error={error} isSignup={true} />}
           <p className='text-grayDarker text-center text-xs mt-custom18 mb-10'>
             By signing up, you agree to our <strong>Terms</strong> . Learn how we collect, use and
             share your data in our <strong>Data Policy</strong> and how we use cookies and similar

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import AuthContainer from '../ui/auth-container'
@@ -9,7 +9,7 @@ import LoginFbButton from '../ui/buttons/login-fb-button'
 import Logo from '../ui/logo'
 import Input from '../ui/input'
 import Divider from '../ui/divider'
-import Error from '../ui/error'
+import ErrorMessage from '../ui/error-message'
 
 import { firebaseActions } from '../../store/firebase-slice'
 
@@ -18,6 +18,7 @@ export default function Login() {
   const [passwordInput, setPasswordInput] = useState('')
   const [error, setError] = useState(null)
 
+  const router = useRouter()
   const dispatch = useDispatch()
   const isLoading = useSelector(state => state.firebase.isLoading)
 
@@ -33,22 +34,30 @@ export default function Login() {
       return
     }
 
-    const auth = getAuth()
     try {
-      const response = await signInWithEmailAndPassword(auth, userInput, passwordInput)
+      const response = await fetch(`/api/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userInput,
+          passwordInput,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const user = await response.json()
+      if (user.code) throw new Error(user.code)
+      router.replace('/')
 
-      // Reset form
-      setUserInput('')
-      setPasswordInput('')
       setError(null)
       dispatch(firebaseActions.isNotLoadingHandler())
     } catch (err) {
       dispatch(firebaseActions.isNotLoadingHandler())
-      if (err.message.includes('user-not-found')) {
+      if (err.message === 'auth/user-not-found') {
         setError(
           "The username you entered doesn't belong to an account. Please check your username and try again."
         )
-      } else if (err.message.includes('wrong-password')) {
+      } else if (err.message === 'auth/wrong-password') {
         setError('Sorry, your password was incorrect. Please double-check your password.')
       } else {
         setError(err.message)
@@ -84,7 +93,7 @@ export default function Login() {
           </form>
           <Divider />
           <LoginFbButton bgColor='transparent' bottom='4' icon='16' iconColor='#385185' />
-          {error && <Error error={error} />}
+          {error && <ErrorMessage error={error} />}
           <p className='text-center text-xs text-blueDarker mb-4'>Forgot password?</p>
         </div>
         <div className='max-w-350 px-10 border-transparent mt-3 py-5 xs:border-gray border-1 border-solid'>
