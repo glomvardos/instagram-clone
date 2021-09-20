@@ -1,3 +1,4 @@
+import { firebase } from '../../lib/firebase'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import cookie from 'cookie'
 
