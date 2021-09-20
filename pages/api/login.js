@@ -1,13 +1,24 @@
+import admin from 'firebase-admin'
 import cookie from 'cookie'
-import { firebase } from '../../lib/firebase'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+
+const firebaseConfig = {
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+}
+
+admin.initializeApp(firebaseConfig)
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     req.status(405).json({ message: `Method ${req.method} is not allowed` })
     return
   }
-  firebase
+
   const { userInput, passwordInput } = req.body
 
   const auth = getAuth()
