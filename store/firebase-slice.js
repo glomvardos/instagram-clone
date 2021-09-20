@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { app } from '../lib/firebase'
 
 const firebaseSlice = createSlice({
   name: 'firebase',

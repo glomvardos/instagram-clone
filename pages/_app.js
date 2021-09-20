@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import store from '../store/store'
 import '../styles/globals.css'
 import Header from '../components/header/header'
+import { firebase } from '../lib/firebase'
 
 function MyApp({ Component, pageProps }) {
   const { pathname } = useRouter()
