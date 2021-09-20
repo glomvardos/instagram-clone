@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import Link from 'next/link'
 import AuthContainer from '../ui/auth-container'
 import AuthButton from '../ui/buttons/auth-button'
@@ -34,30 +35,21 @@ export default function Login() {
       return
     }
 
+    const auth = getAuth()
     try {
-      const response = await fetch(`/api/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          userInput,
-          passwordInput,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const user = await response.json()
-      if (user.code) throw new Error(user.code)
+      const response = await signInWithEmailAndPassword(auth, userInput, passwordInput)
       router.replace('/')
 
       setError(null)
       dispatch(firebaseActions.isNotLoadingHandler())
     } catch (err) {
+      console.log(err.message)
       dispatch(firebaseActions.isNotLoadingHandler())
-      if (err.message === 'auth/user-not-found') {
+      if (err.message.includes('auth/user-not-found')) {
         setError(
           "The username you entered doesn't belong to an account. Please check your username and try again."
         )
-      } else if (err.message === 'auth/wrong-password') {
+      } else if (err.message.includes('auth/wrong-password')) {
         setError('Sorry, your password was incorrect. Please double-check your password.')
       } else {
         setError(err.message)
