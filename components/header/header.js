@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Logo from '../ui/logo'
-import Search from '../ui/search'
+import Search from './search'
+import NavIcons from './nav-icons'
 
 export default function Header({ children }) {
   return (
@@ -13,6 +14,7 @@ export default function Header({ children }) {
             </a>
           </Link>
           <Search />
+          <NavIcons />
         </nav>
       </header>
       <main className='max-w-975 mx-auto'>{children}</main>

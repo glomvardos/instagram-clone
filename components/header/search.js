@@ -1,20 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 import { IoMdCloseCircle } from 'react-icons/io'
+import Backdrop from '../ui/backdrop'
 
 export default function Search() {
   const [isClicked, setIsClicked] = useState(false)
+  const focusRef = useRef()
 
-  const searchInputHandler = () => setIsClicked(prevState => !prevState) // Show / hide input field
+  useEffect(() => {
+    if (isClicked) {
+      focusRef.current.focus()
+    }
+  }, [isClicked])
+
+  // Show / hide input field
+  const searchInputHandler = () => setIsClicked(prevState => !prevState)
+
   return (
     <>
       {/* Backdrop */}
-      {isClicked && (
-        <div
-          onClick={searchInputHandler}
-          className='fixed top-0 left-0 bg-transparent w-full h-full hidden sm:block'
-        />
-      )}
+      {isClicked && <Backdrop onClickHandler={searchInputHandler} />}
       {/* Search Input */}
       <div className='hidden sm:block bg-whiteBg relative w-52 cursor-text '>
         <div
@@ -35,6 +40,7 @@ export default function Search() {
               <input
                 className='text-sm font-normal w-full focus:outline-none bg-transparent'
                 placeholder='Search'
+                ref={focusRef}
               />
               <IoMdCloseCircle
                 onClick={searchInputHandler}

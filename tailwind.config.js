@@ -32,10 +32,12 @@ module.exports = {
       height: {
         custom1: '1px',
         custom14: '14px',
+        custom22: '22px',
         custom54: '54px',
       },
       width: {
         custom14: '14px',
+        custom22: '22px',
       },
       maxWidth: {
         350: '350px',
@@ -52,6 +54,7 @@ module.exports = {
       },
       margin: {
         custom18: '18px',
+        custom22: '22px',
       },
       fontSize: {
         13: '13px',
