@@ -37,11 +37,28 @@ export default function Login() {
 
     const auth = getAuth()
     try {
-      const response = await signInWithEmailAndPassword(auth, userInput, passwordInput)
-      router.replace('/')
+      const response = await signInWithEmailAndPassword(
+        auth,
+        userInput,
+        passwordInput
+      )
+      const jwt = await auth.currentUser.getIdToken()
+      const storeToken = await fetch('/api/store-cookie', {
+        method: 'POST',
+        body: JSON.stringify({ jwt }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
-      setError(null)
-      dispatch(firebaseActions.isNotLoadingHandler())
+      const cookieResponse = await storeToken.json()
+      if (cookieResponse.ok) {
+        router.replace('/')
+        setError(null)
+        dispatch(firebaseActions.isNotLoadingHandler())
+      } else {
+        throw new Error('Something went wrong')
+      }
     } catch (err) {
       console.log(err.message)
       dispatch(firebaseActions.isNotLoadingHandler())
@@ -50,7 +67,9 @@ export default function Login() {
           "The username you entered doesn't belong to an account. Please check your username and try again."
         )
       } else if (err.message.includes('auth/wrong-password')) {
-        setError('Sorry, your password was incorrect. Please double-check your password.')
+        setError(
+          'Sorry, your password was incorrect. Please double-check your password.'
+        )
       } else {
         setError(err.message)
       }
@@ -59,7 +78,9 @@ export default function Login() {
 
   // Check for valid inputs
   const isNotValidInput =
-    userInput.trim() !== '' && passwordInput.trim() !== '' && passwordInput.length >= 6
+    userInput.trim() !== '' &&
+    passwordInput.trim() !== '' &&
+    passwordInput.length >= 6
 
   return (
     <AuthContainer className='bg-whiteBg min-h-full flex flex-col justify-center items-center'>
@@ -81,18 +102,31 @@ export default function Login() {
               value={passwordInput}
               onChange={e => setPasswordInput(e.target.value)}
             />
-            <AuthButton text='Log in' isValid={isNotValidInput} isLoading={isLoading} />
+            <AuthButton
+              text='Log in'
+              isValid={isNotValidInput}
+              isLoading={isLoading}
+            />
           </form>
           <Divider />
-          <LoginFbButton bgColor='transparent' bottom='4' icon='16' iconColor='#385185' />
+          <LoginFbButton
+            bgColor='transparent'
+            bottom='4'
+            icon='16'
+            iconColor='#385185'
+          />
           {error && <ErrorMessage error={error} />}
-          <p className='text-center text-xs text-blueDarker mb-4'>Forgot password?</p>
+          <p className='text-center text-xs text-blueDarker mb-4'>
+            Forgot password?
+          </p>
         </div>
         <div className='max-w-350 px-10 border-transparent mt-3 py-5 xs:border-gray border-1 border-solid'>
           <p className='text-sm text-center'>
             Don't have an account?{' '}
             <Link href='/signup'>
-              <a className='text-authBlue font-semibold cursor-pointer'>Sign up</a>
+              <a className='text-authBlue font-semibold cursor-pointer'>
+                Sign up
+              </a>
             </Link>
           </p>
         </div>
