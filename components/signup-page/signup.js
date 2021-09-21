@@ -55,6 +55,16 @@ export default function Signup() {
         passwordInput
       )
       createdUser.user.displayName = usernameInput
+      // Add user properties to firestore
+      const addUserProps = await addDoc(collection(firestore, 'users'), {
+        userId: createdUser.user.uid,
+        username: usernameInput.toLowerCase(),
+        fullName: capitalizeName(fullnameInput),
+        emailAddress: emailInput.toLowerCase(),
+        following: [],
+        followers: [],
+        dateCreated: Date.now(),
+      })
 
       const jwt = await auth.currentUser.getIdToken()
 
@@ -68,17 +78,6 @@ export default function Signup() {
 
       const cookieResponse = await storeToken.json()
       if (cookieResponse.ok) {
-        // Add user properties to firestore
-        const addUserProps = await addDoc(collection(firestore, 'users'), {
-          userId: createdUser.user.uid,
-          username: usernameInput.toLowerCase(),
-          fullName: capitalizeName(fullnameInput),
-          emailAddress: emailInput.toLowerCase(),
-          following: [],
-          followers: [],
-          dateCreated: Date.now(),
-        })
-
         setError(null)
         dispatch(firebaseActions.isNotLoadingHandler())
         router.replace('/')
