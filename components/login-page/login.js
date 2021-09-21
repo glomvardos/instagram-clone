@@ -42,7 +42,9 @@ export default function Login() {
         userInput,
         passwordInput
       )
+
       const jwt = await auth.currentUser.getIdToken()
+
       const storeToken = await fetch('/api/store-cookie', {
         method: 'POST',
         body: JSON.stringify({ jwt }),
@@ -60,7 +62,6 @@ export default function Login() {
         throw new Error('Something went wrong')
       }
     } catch (err) {
-      console.log(err.message)
       dispatch(firebaseActions.isNotLoadingHandler())
       if (err.message.includes('auth/user-not-found')) {
         setError(

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +24,7 @@ export default function Signup() {
   const [passwordInput, setPasswordInput] = useState('')
   const [error, setError] = useState(null)
 
+  const router = useRouter()
   const dispatch = useDispatch()
   const isLoading = useSelector(state => state.firebase.isLoading)
 
@@ -47,32 +49,48 @@ export default function Signup() {
 
     const auth = getAuth()
     try {
-      const createdUser = await createUserWithEmailAndPassword(auth, emailInput, passwordInput)
+      const createdUser = await createUserWithEmailAndPassword(
+        auth,
+        emailInput,
+        passwordInput
+      )
       createdUser.user.displayName = usernameInput
 
-      // Add user properties to firestore
-      const addUserProps = await addDoc(collection(firestore, 'users'), {
-        userId: createdUser.user.uid,
-        username: usernameInput.toLowerCase(),
-        fullName: capitalizeName(fullnameInput),
-        emailAddress: emailInput.toLowerCase(),
-        following: [],
-        followers: [],
-        dateCreated: Date.now(),
+      const jwt = await auth.currentUser.getIdToken()
+
+      const storeToken = await fetch('/api/store-cookie', {
+        method: 'POST',
+        body: JSON.stringify({ jwt }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
 
-      // Reset form
-      setEmailInput('')
-      setUsernameInput('')
-      setFullnameInput('')
-      setPasswordInput('')
+      const cookieResponse = await storeToken.json()
+      if (cookieResponse.ok) {
+        // Add user properties to firestore
+        const addUserProps = await addDoc(collection(firestore, 'users'), {
+          userId: createdUser.user.uid,
+          username: usernameInput.toLowerCase(),
+          fullName: capitalizeName(fullnameInput),
+          emailAddress: emailInput.toLowerCase(),
+          following: [],
+          followers: [],
+          dateCreated: Date.now(),
+        })
 
-      setError(null)
-      dispatch(firebaseActions.isNotLoadingHandler())
+        setError(null)
+        dispatch(firebaseActions.isNotLoadingHandler())
+        router.replace('/')
+      } else {
+        throw new Error('Something went wrong')
+      }
     } catch (err) {
       dispatch(firebaseActions.isNotLoadingHandler())
       if (err.message.includes('email-already-in-use')) {
         setError(`Another account is using ${emailInput}`)
+      } else {
+        setError(err.message)
       }
     }
   }
@@ -93,7 +111,12 @@ export default function Signup() {
           <p className='font-semibold text-grayDarker text-center text-17 leading-5'>
             Sign up to see photos and videos from your friends.
           </p>
-          <LoginFbButton bgColor='authBlue' width='full' iconColor='#ffffff' icon={17} />
+          <LoginFbButton
+            bgColor='authBlue'
+            width='full'
+            iconColor='#ffffff'
+            icon={17}
+          />
           <Divider />
           <form onSubmit={onSubmitHandler}>
             <Input
@@ -126,12 +149,17 @@ export default function Signup() {
               onChange={e => setPasswordInput(e.target.value)}
             />
 
-            <AuthButton text='Sign up' isValid={isNotValidInput} isLoading={isLoading} />
+            <AuthButton
+              text='Sign up'
+              isValid={isNotValidInput}
+              isLoading={isLoading}
+            />
           </form>
           {error && <ErrorMessage error={error} isSignup={true} />}
           <p className='text-grayDarker text-center text-xs mt-custom18 mb-10'>
-            By signing up, you agree to our <strong>Terms</strong> . Learn how we collect, use and
-            share your data in our <strong>Data Policy</strong> and how we use cookies and similar
+            By signing up, you agree to our <strong>Terms</strong> . Learn how
+            we collect, use and share your data in our{' '}
+            <strong>Data Policy</strong> and how we use cookies and similar
             technology in our <strong>Cookies Policy</strong> .
           </p>
         </div>
@@ -139,7 +167,9 @@ export default function Signup() {
           <p className='text-sm text-center'>
             Have an account?{' '}
             <Link href='/login'>
-              <a className='text-authBlue font-semibold cursor-pointer'>Log in</a>
+              <a className='text-authBlue font-semibold cursor-pointer'>
+                Log in
+              </a>
             </Link>
           </p>
         </div>
