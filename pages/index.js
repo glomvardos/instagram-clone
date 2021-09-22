@@ -4,7 +4,7 @@ export default function Home() {
   return <></>
 }
 
-export async function getServerSideProps(context) {
+export function getServerSideProps(context) {
   const jwt = getToken(context.req)
   if (!jwt) {
     return {
