@@ -1,8 +1,17 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import Login from '../../components/login-page/login'
 import { getToken } from '../../helpers/getToken'
 
-export default function AuthPage() {
+export default function LoginPage({ jwt }) {
+  const router = useRouter()
+  useEffect(() => {
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && jwt) {
+      router.replace('/')
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -15,7 +24,7 @@ export default function AuthPage() {
 
 export function getServerSideProps(context) {
   const jwt = getToken(context.req)
-
+  console.log(jwt)
   if (jwt) {
     return {
       redirect: {
@@ -25,6 +34,6 @@ export function getServerSideProps(context) {
     }
   }
   return {
-    props: {},
+    props: { jwt: jwt || {} },
   }
 }
