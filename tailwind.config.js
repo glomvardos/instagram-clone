@@ -53,6 +53,8 @@ module.exports = {
         1: '5px',
       },
       margin: {
+        custom1Neg: '-1px',
+        custom1: '1px',
         custom18: '18px',
         custom22: '22px',
       },

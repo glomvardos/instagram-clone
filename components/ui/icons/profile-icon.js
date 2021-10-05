@@ -43,9 +43,11 @@ export default function ProfileIcon() {
       />
       {isClicked && (
         <div className='opacity-0 animate-opacity'>
-          <div className='absolute h-custom14 w-custom14  bg-white top-8 left-2/4 transform -translate-x-2/4 -translate-y-0.5 rotate-45 shadow-custom z-10' />
-          <div className=' absolute w-full h-3 bg-white z-20 -bottom-7' />
-          <div className=' w-56 absolute bg-white top-9 -right-4 transform shadow-custom rounded-md'>
+          <div
+            style={{ clipPath: 'polygon(50% 0%, 0 50%, 100% 50%)' }}
+            className='absolute bg-white h-custom14 w-custom14 mt-custom1Neg top-8 left-2/4 transform -translate-x-2/4 -translate-y-0.5  shadow-custom z-10'
+          />
+          <div className='w-56 absolute bg-white top-9 -right-4 transform shadow-custom rounded-md '>
             <ProfileIconContainer text='Profile' path='/'>
               <HumanIcon />
             </ProfileIconContainer>
