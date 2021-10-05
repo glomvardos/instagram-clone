@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { getAuth, signOut } from 'firebase/auth'
 import Backdrop from '../backdrop'
 import ProfileIconContainer from '../profile-icon-container'
@@ -9,11 +10,20 @@ import SwitchAccountsIcon from '../icons/switch-accounts-icon'
 
 export default function ProfileIcon() {
   const [isClicked, setIsClicked] = useState(false)
+  const router = useRouter()
+
   const profileHandler = () => setIsClicked(prevState => !prevState) // Show / hide profile options
 
   const logoutHandler = () => {
     const auth = getAuth()
-    console.log(auth)
+    signOut(auth).then(async () => {
+      const logoutResponse = await fetch('/api/destroy-cookie', {
+        method: 'POST',
+      })
+      if (logoutResponse.ok) {
+        router.replace('/login')
+      }
+    })
   }
 
   return (
