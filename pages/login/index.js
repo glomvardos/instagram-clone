@@ -24,7 +24,7 @@ export default function LoginPage({ jwt }) {
 
 export function getServerSideProps(context) {
   const jwt = getToken(context.req)
-  console.log(jwt)
+
   if (jwt) {
     return {
       redirect: {
